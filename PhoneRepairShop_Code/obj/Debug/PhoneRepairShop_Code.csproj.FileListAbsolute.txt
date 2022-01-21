@@ -10,3 +10,4 @@ C:\Program Files\Acumatica ERP\NewPhoneRepairShop\App_Data\Projects\PhoneRepairS
 C:\Program Files\Acumatica ERP\NewPhoneRepairShop\App_Data\Projects\PhoneRepairShop_Code\PhoneRepairShop_Code\obj\Debug\PhoneRepairShop_Code.csproj.CopyComplete
 C:\Program Files\Acumatica ERP\NewPhoneRepairShop\App_Data\Projects\PhoneRepairShop_Code\PhoneRepairShop_Code\obj\Debug\PhoneRepairShop_Code.dll
 C:\Program Files\Acumatica ERP\NewPhoneRepairShop\App_Data\Projects\PhoneRepairShop_Code\PhoneRepairShop_Code\obj\Debug\PhoneRepairShop_Code.pdb
+C:\Program Files\Acumatica ERP\NewPhoneRepairShop\App_Data\Projects\PhoneRepairShop_Code\PhoneRepairShop_Code\obj\Debug\PhoneRepairShop_Code.csproj.AssemblyReference.cache

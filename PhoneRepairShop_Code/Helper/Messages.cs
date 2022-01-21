@@ -13,5 +13,12 @@ namespace PhoneRepairShop.Helper
         public const string Medium = "Medium";
         public const string Low = "Low";
 
+        //Repair Item Types
+        public const string Battery = "Battery";
+        public const string Screen = "Screen";
+        public const string ScreenCover = "Screen Cover";
+        public const string BackCover = "Back Cover";
+        public const string Motherboard = "Motherboard";
+
     }
 }
