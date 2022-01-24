@@ -18,43 +18,45 @@ using System;
 
 namespace PX.Objects.IN
 {
-      public sealed class InventoryItemExt : PXCacheExtension<PX.Objects.IN.InventoryItem>
-      {
-            #region UsrRepairItem
-            [PXDBBool]
-            [PXUIField(DisplayName="Repair Item")]
-            [PXDefault(false, PersistingCheck = PXPersistingCheck.Nothing)]
+    public sealed class InventoryItemExt : PXCacheExtension<PX.Objects.IN.InventoryItem>
+    {
+        #region UsrRepairItem
+        [PXDBBool]
+        [PXUIField(DisplayName = "Repair Item")]
+        [PXDefault(false, PersistingCheck = PXPersistingCheck.Nothing)]
 
-            public bool? UsrRepairItem { get; set; }
-            public abstract class usrRepairItem : PX.Data.BQL.BqlBool.Field<usrRepairItem> { }
+        public bool? UsrRepairItem { get; set; }
+        public abstract class usrRepairItem : PX.Data.BQL.BqlBool.Field<usrRepairItem> { }
         #endregion
 
 
         #region UsrRepairItemType 
-        [PXDBString(2, IsFixed = true)] 
+        [PXDBString(2, IsFixed = true)]
         [PXStringList(
             new string[]
-            { 
+            {
                 PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.Battery,
                 PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.Screen,
                 PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.ScreenCover,
                 PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.BackCover,
-                PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.Motherboard 
-            }, 
+                PhoneRepairShop.Helper.Constants.RepairItemTypeConstants.Motherboard
+            },
             new string[]
             {
                 PhoneRepairShop.Helper.Messages.Battery,
                 PhoneRepairShop.Helper.Messages.Screen,
                 PhoneRepairShop.Helper.Messages.ScreenCover,
                 PhoneRepairShop.Helper.Messages.BackCover,
-                PhoneRepairShop.Helper.Messages.Motherboard 
-                
+                PhoneRepairShop.Helper.Messages.Motherboard
+
              }
             )
-        ] 
-        [PXUIField(DisplayName = "Repair Item Type", Enabled =false)] 
-        public string UsrRepairItemType { get; set; } 
-        public abstract class usrRepairItemType : PX.Data.BQL.BqlString.Field<usrRepairItemType> { } 
+        ]
+        [PXUIField(DisplayName = "Repair Item Type", Enabled = false)]
+        public string UsrRepairItemType { get; set; }
+        public abstract class usrRepairItemType : PX.Data.BQL.BqlString.Field<usrRepairItemType> { }
         #endregion
     }
+
+   
 }
