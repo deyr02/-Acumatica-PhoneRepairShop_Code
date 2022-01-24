@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PX.Common;
 
 namespace PhoneRepairShop.Helper
 {
+    [PXLocalizable()]
     public static class Messages
     {
         //complexity of repair
@@ -19,6 +21,8 @@ namespace PhoneRepairShop.Helper
         public const string ScreenCover = "Screen Cover";
         public const string BackCover = "Back Cover";
         public const string Motherboard = "Motherboard";
+
+        public const string StockItemIncorrectRepairItemType = "This stock item has a repair item type that differs form {0}.";
 
     }
 }

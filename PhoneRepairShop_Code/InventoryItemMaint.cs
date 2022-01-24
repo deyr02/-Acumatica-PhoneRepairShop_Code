@@ -18,9 +18,6 @@ namespace PX.Objects.IN
             PXUIFieldAttribute.SetEnabled<InventoryItemExt.usrRepairItemType>(e.Cache, e.Row, enableFields);
       
     }
-
-    
-
     #endregion
   }
 }
