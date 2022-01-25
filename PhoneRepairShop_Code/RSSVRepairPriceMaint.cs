@@ -2,6 +2,7 @@ using System;
 using PX.Data;
 using PX.Data.BQL.Fluent;
 using PX.Objects.IN;
+using PX.Objects.CT;
 using System.Linq;
 
 namespace PhoneRepairShop
@@ -13,15 +14,33 @@ namespace PhoneRepairShop
 
 
   
-    public SelectFrom<RSSVRepairPrice>.View RepairPrices;
+       public SelectFrom<RSSVRepairPrice>.View RepairPrices;
 
 
-   public SelectFrom<RSSVRepairItem>
+       public SelectFrom<RSSVRepairItem>
+                .LeftJoin<InventoryItem>
+                .On<InventoryItem.inventoryID.IsEqual<RSSVRepairItem.inventoryID.FromCurrent>>
+                .Where<RSSVRepairItem.deviceID.IsEqual<RSSVRepairPrice.deviceID.FromCurrent>
+                .And<RSSVRepairItem.serviceID.IsEqual<RSSVRepairPrice.serviceID.FromCurrent>>>.View RepairItems;
+
+
+        public SelectFrom<RSSVLabor>
             .LeftJoin<InventoryItem>
-            .On<InventoryItem.inventoryID.IsEqual<RSSVRepairItem.inventoryID.FromCurrent>>
-            .Where<RSSVRepairItem.deviceID.IsEqual<RSSVRepairPrice.deviceID.FromCurrent>
-            .And<RSSVRepairItem.serviceID.IsEqual<RSSVRepairPrice.serviceID.FromCurrent>>>.View RepairItems;
+            .On<InventoryItem.inventoryID.IsEqual<RSSVLabor.inventoryID.FromCurrent>>
+            .Where<RSSVLabor.deviceID.IsEqual<RSSVRepairPrice.deviceID.FromCurrent>
+            .And<RSSVLabor.serviceID.IsEqual<RSSVRepairPrice.serviceID.FromCurrent>>>.View Labor;
 
+        public SelectFrom<RSSVWarranty>
+            .LeftJoin<ContractTemplate>
+            .On<ContractTemplate.contractID.IsEqual<RSSVWarranty.contractID.FromCurrent>>
+            .Where<RSSVWarranty.deviceID.IsEqual<RSSVRepairPrice.deviceID.FromCurrent>
+                .And<RSSVWarranty.serviceID.IsEqual<RSSVRepairPrice.serviceID.FromCurrent>>>
+            .OrderBy<RSSVWarranty.defaultWarranty.Desc>.View Warranty;
+
+        //The view for the default warranty
+        public SelectFrom<Contract>
+            . Where<Contract.contractCD.IsEqual<defaultWarranty>>
+            . View DefaultWarranty;
 
 
         #region Events
@@ -96,7 +115,64 @@ namespace PhoneRepairShop
                 row.Required = repairItem.Required; 
         }
 
+        //Insert the default detail record.
+        protected virtual void _(Events.RowInserted<RSSVRepairPrice> e) 
+        { 
+            if (Warranty.Select().Count == 0) 
+            { 
+                bool oldDirty = Warranty.Cache.IsDirty; 
+                // Retrieve the default warranty.
+                Contract defaultWarranty = (Contract)DefaultWarranty.Select(); 
+                if (defaultWarranty != null) 
+                { 
+                    RSSVWarranty line = new RSSVWarranty(); 
+                    line.ContractID = defaultWarranty.ContractID; 
+                    
+                    // Insert the data record into 
+                    // the cache of the Warranty data view.
+                    Warranty.Insert(line); 
+                    // Clear the flag that indicates in the UI whether the cache 
+                    // contains changes.
+                    Warranty.Cache.IsDirty = oldDirty; 
+                } 
+            }
+        }
+       
+        //Set the DefaultWarranty field to true for the inserted default warranty
+        protected virtual void _(Events.FieldDefaulting< RSSVWarranty.defaultWarranty> e) 
+        { 
+            RSSVWarranty line = (RSSVWarranty)e.Row; 
+            if (line == null) return; 
+            Contract defaultWarranty = (Contract)DefaultWarranty.Select(); 
+            if (defaultWarranty!=null && line.ContractID == defaultWarranty.ContractID) 
+            { 
+                //Setting the default value
+                e.NewValue = true; 
+                // Setting a flag to prevent the execution of the FieldDefaulting 
+                // event handlers that are defined in attributes
+                e.Cancel = true; 
+            }
+        }
+        //Make the default warranty unavailable for editing.
+        protected virtual void _(Events.RowSelected<RSSVWarranty> e) 
+        { 
+            RSSVWarranty line = e.Row; 
+            if (line == null) return;
+            PXUIFieldAttribute.SetEnabled(e.Cache, line, line.DefaultWarranty != true); 
+        }
+
+
         #endregion
+
+
+        //The FBQL constant for the free warranty that is inserted by default
+        public const string DefaultWarrantyConstant = "DFLTWARRNT"; 
+        public class defaultWarranty : PX.Data.BQL.BqlString.Constant<defaultWarranty> 
+        { 
+            public defaultWarranty() : base(DefaultWarrantyConstant) 
+            { 
+            } 
+        }
 
     }
 }

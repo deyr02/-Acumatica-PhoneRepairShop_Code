@@ -23,6 +23,7 @@ namespace PhoneRepairShop.Helper
         public const string Motherboard = "Motherboard";
 
         public const string StockItemIncorrectRepairItemType = "This stock item has a repair item type that differs form {0}.";
+        public const string CannotAddStockItemToRepairPrice = "Cannot add a stock item to a repair price.";
 
     }
 }
