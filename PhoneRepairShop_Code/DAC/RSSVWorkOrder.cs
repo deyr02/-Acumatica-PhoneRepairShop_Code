@@ -21,13 +21,15 @@ namespace PhoneRepairShop
         #endregion
 
         #region CustomerID
+        [PXDefault]
         [CustomerActive(DisplayName = "Customer ID", DescriptionField = typeof(Customer.acctName))]
+        [PXUIEnabled(typeof(Where<RSSVWorkOrder.hold.IsEqual<True>>))]
         public virtual int? CustomerID { get; set; }
         public abstract class customerID : PX.Data.BQL.BqlInt.Field<customerID> { }
         #endregion
 
         #region DateCreated
-        [PXDBDateAndTime(DisplayMask = "M", InputMask = "d")]
+        [PXDBDate()]
         [PXDefault(typeof(AccessInfo.businessDate))]
         [PXUIField(DisplayName = "Date Created")]
         public virtual DateTime? DateCreated { get; set; }
@@ -35,7 +37,7 @@ namespace PhoneRepairShop
         #endregion
 
         #region DateCompleted
-        [PXDBDateAndTime(DisplayMask = "M", InputMask = "d")]
+        [PXDBDate()]
         [PXUIField(DisplayName = "Date Completed", Enabled = false)]
         public virtual DateTime? DateCompleted { get; set; }
         public abstract class dateCompleted : PX.Data.BQL.BqlDateTime.Field<dateCompleted> { }
@@ -49,20 +51,20 @@ namespace PhoneRepairShop
             new string[]
             {
                Helper.Constants.WorkOrderStatusConstants.OnHold,
-               Helper.Constants.WorkOrderStatusConstants.PendingPayment,
-               Helper.Constants.WorkOrderStatusConstants.ReadyForAssignment,
-               Helper.Constants.WorkOrderStatusConstants.Assigned,
-               Helper.Constants.WorkOrderStatusConstants.Completed,
-               Helper.Constants.WorkOrderStatusConstants.Paid
+                Helper.Constants.WorkOrderStatusConstants.PendingPayment,
+                Helper.Constants.WorkOrderStatusConstants.ReadyForAssignment,
+                Helper.Constants.WorkOrderStatusConstants.Assigned,
+                Helper.Constants.WorkOrderStatusConstants.Completed,
+                Helper.Constants.WorkOrderStatusConstants.Paid
             },
             new string[]
             {
-                Helper.Messages.OnHold,
-                Helper.Messages.PendingPayment,
-                Helper.Messages.ReadyForAssignment,
-                Helper.Messages.Assigned,
-                Helper.Messages.Completed,
-                Helper.Messages.Paid
+                 Helper.Messages.OnHold,
+                 Helper.Messages.PendingPayment,
+                 Helper.Messages.ReadyForAssignment,
+                 Helper.Messages.Assigned,
+                 Helper.Messages.Completed,
+                 Helper.Messages.Paid
             })]
         public virtual string Status { get; set; }
         public abstract class status : PX.Data.BQL.BqlString.Field<status> { }
@@ -72,6 +74,9 @@ namespace PhoneRepairShop
         [PXDBBool()]
         [PXDefault(true)]
         [PXUIField(DisplayName = "Hold")]
+        [PXUIVisible(typeof(Where<RSSVWorkOrder.status.IsEqual<Helper.Constants.workOrderStatusOnHold>.
+            Or<RSSVWorkOrder.status.IsEqual<Helper.Constants.workOrderStatusPendingPayment>>.
+            Or<RSSVWorkOrder.status.IsEqual<Helper.Constants.workOrderStatusReadyForAssignment>>>))]
         public virtual bool? Hold { get; set; }
         public abstract class hold : PX.Data.BQL.BqlBool.Field<hold> { }
         #endregion
@@ -86,13 +91,14 @@ namespace PhoneRepairShop
         #region ServiceID
         [PXDBInt()]
         [PXDefault]
-        [PXUIField(DisplayName = "Service", Required = true, Visibility = PXUIVisibility.SelectorVisible)]
-        [PXSelector(
-            typeof(Search<RSSVRepairService.serviceID>), 
-            typeof(RSSVRepairService.serviceCD), 
-            typeof(RSSVRepairService.description), 
-            DescriptionField = typeof(RSSVRepairService.description),
-            SelectorMode = PXSelectorMode.DisplayModeText)]
+        [PXUIField(DisplayName = "Service",
+            Visibility = PXUIVisibility.SelectorVisible)]
+        [PXSelector(typeof(Search<RSSVRepairService.serviceID>),
+            typeof(RSSVRepairService.serviceCD),
+            typeof(RSSVRepairService.description),
+            SubstituteKey = typeof(RSSVRepairService.serviceCD),
+            DescriptionField = typeof(RSSVRepairService.description))]
+        [PXUIEnabled(typeof(Where<RSSVWorkOrder.hold.IsEqual<True>>))]
         public virtual int? ServiceID { get; set; }
         public abstract class serviceID : PX.Data.BQL.BqlInt.Field<serviceID> { }
         #endregion
@@ -100,14 +106,14 @@ namespace PhoneRepairShop
         #region DeviceID
         [PXDBInt()]
         [PXDefault]
-        [PXUIField(DisplayName = "Device", Required = true, Visibility = PXUIVisibility.SelectorVisible)]
-        [PXSelector(
-            typeof(Search<RSSVDevice.deviceID>), 
-            typeof(RSSVDevice.deviceCD), 
-            typeof(RSSVDevice.description), 
-            DescriptionField = typeof(RSSVDevice.description), 
-            SelectorMode = PXSelectorMode.DisplayModeText
-            )]
+        [PXUIField(DisplayName = "Device",
+            Visibility = PXUIVisibility.SelectorVisible)]
+        [PXSelector(typeof(Search<RSSVDevice.deviceID>),
+            typeof(RSSVDevice.deviceCD),
+            typeof(RSSVDevice.description),
+            SubstituteKey = typeof(RSSVDevice.deviceCD),
+            DescriptionField = typeof(RSSVDevice.description))]
+        [PXUIEnabled(typeof(Where<RSSVWorkOrder.hold.IsEqual<True>>))]
         public virtual int? DeviceID { get; set; }
         public abstract class deviceID : PX.Data.BQL.BqlInt.Field<deviceID> { }
         #endregion
@@ -128,10 +134,10 @@ namespace PhoneRepairShop
         #endregion
 
         #region Assignee
-        [PXDBGuid]
+        
         [PXUIField(DisplayName = "Assignee")]
         [PXOwnerSelector]
-        public virtual Guid? Assignee { get; set; }
+        public virtual int? Assignee { get; set; }
         public abstract class assignee : PX.Data.BQL.BqlInt.Field<assignee> { }
         #endregion
 

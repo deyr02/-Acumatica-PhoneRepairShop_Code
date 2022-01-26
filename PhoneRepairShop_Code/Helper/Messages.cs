@@ -35,6 +35,9 @@ namespace PhoneRepairShop.Helper
         public const string Completed = "Completed"; 
         public const string Paid = "Paid";
 
+        public const string QuantityCannotBeNegative = "The value in the Quantity column cannot be negative."; 
+        public const string QuantityToSmall = "The value in the Quantity column has been corrected to " + "the minimum possible value.";
 
+        public const string NoRequiredItem = "The work order does not contain a required repair item of the {0} type.";
     }
 }
