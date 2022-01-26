@@ -74,6 +74,8 @@
     <Compile Include="DAC\RSSVWarranty.cs" />
     <Compile Include="DAC\RSSVWorkOrderLabor.cs" />
     <Compile Include="RSSVWorkOrderEntry.cs" />
+    <Compile Include="DAC\RSSVSetup.cs" />
+    <Compile Include="RSSVSetupMaint.cs" />
 <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

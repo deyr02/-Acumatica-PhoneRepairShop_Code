@@ -17,8 +17,20 @@ namespace PhoneRepairShop
             .Where<RSSVWorkOrderItem.orderNbr.IsEqual<RSSVWorkOrder.orderNbr.FromCurrent>>.View RepairItems;
         public SelectFrom<RSSVWorkOrderLabor>
             .Where<RSSVWorkOrderLabor.orderNbr.IsEqual<RSSVWorkOrder.orderNbr.FromCurrent>>.View Labor;
+
+
+        //The view for the auto-numbering of records
+        public PXSetup<RSSVSetup> AutoNumSetup;
         #endregion
 
+
+        #region Constrictor
+        //The graph constructor
+        public RSSVWorkOrderEntry() 
+        { 
+            RSSVSetup setup = AutoNumSetup.Current; 
+        }
+        #endregion
 
 
         #region Events
