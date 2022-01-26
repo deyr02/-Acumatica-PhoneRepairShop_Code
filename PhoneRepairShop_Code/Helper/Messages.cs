@@ -10,7 +10,8 @@ namespace PhoneRepairShop.Helper
     [PXLocalizable()]
     public static class Messages
     {
-        //complexity of repair
+        //Complexity of repair and work order priorities
+
         public const string High = "High";
         public const string Medium = "Medium";
         public const string Low = "Low";
@@ -24,6 +25,16 @@ namespace PhoneRepairShop.Helper
 
         public const string StockItemIncorrectRepairItemType = "This stock item has a repair item type that differs form {0}.";
         public const string CannotAddStockItemToRepairPrice = "Cannot add a stock item to a repair price.";
+
+
+        //Work order statuses
+        public const string OnHold = "On Hold"; 
+        public const string PendingPayment = "Pending Payment"; 
+        public const string ReadyForAssignment = "Ready for Assignment"; 
+        public const string Assigned = "Assigned"; 
+        public const string Completed = "Completed"; 
+        public const string Paid = "Paid";
+
 
     }
 }
